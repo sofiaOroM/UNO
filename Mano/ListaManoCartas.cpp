@@ -3,6 +3,7 @@
 //
 
 #include "ListaManoCartas.h"
+#include "../Cartas/Carta.h"
 #include <iostream>
 
 ListaManoCartas::ListaManoCartas() {
@@ -40,19 +41,23 @@ void ListaManoCartas::agregarCarta(Carta* carta) {
     cantidad++;
 }
 
-Carta* ListaManoCartas::obtenerCartaEn(int indice) {
-
+Carta* ListaManoCartas::obtenerCartaEn(int indice)
+{
     if (indice < 0 || indice >= cantidad)
         return nullptr;
 
     NodoCartaMano* actual = cabeza;
 
-    for (int i = 0; i < indice; i++) {
+    for (int i = 0; i < indice; i++)
+    {
+        if(actual == nullptr) return nullptr;
         actual = actual->siguiente;
     }
+    if(actual == nullptr) return nullptr;
 
     return actual->carta;
 }
+
 
 void ListaManoCartas::eliminarCarta(int indice) {
 
@@ -115,7 +120,7 @@ int ListaManoCartas::buscarPrimeraJugable(Carta* cartaSuperior) {
 void ListaManoCartas::mostrarCartas() {
 
     if (estaVacia()) {
-        std::cout << "Mano vacía.\n";
+        cout << "Mano vacía."<<endl;
         return;
     }
 
@@ -123,10 +128,12 @@ void ListaManoCartas::mostrarCartas() {
     int i = 0;
 
     while (actual != nullptr) {
-        std::cout << i << ") " << actual->carta->mostrar() << "\n";
+        cout <<"    "<< i << ") " << actual->carta->mostrar() << endl;
         actual = actual->siguiente;
         i++;
     }
+    cout << "[DEBUG] cantidad=" << cantidad << endl;
+
 }
 
 void ListaManoCartas::vaciarLista() {

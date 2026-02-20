@@ -5,6 +5,9 @@
 #ifndef JUEGOUNO_LISTAMANOCARTAS_H
 #define JUEGOUNO_LISTAMANOCARTAS_H
 
+class Carta;
+class NodoCartaMano;
+
 #include "NodoCartaMano.h"
 
 class ListaManoCartas {
