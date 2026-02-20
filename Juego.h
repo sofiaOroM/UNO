@@ -4,33 +4,63 @@
 
 #ifndef JUEGOUNO_JUEGO_H
 #define JUEGOUNO_JUEGO_H
+
 #include "ListCDJugadores.h"
 #include "Pila/PilaCartas.h"
 #include "Cartas/Carta.h"
 
-class Juego
-{
+#include "Reglas/ConfiguracionPartida.h"
+#include  "Reglas/TipoAcumulacion.h"
+class ReglasUno;
+
+class Juego {
+
 private:
-    PilaCartas<Carta*> mazo;
-    PilaCartas<Carta*> descarte;
-    ListCDJugadores<Jugador*> jugadores;
-    Config reglas;
-    bool direccion = false;
-    Carta* cartaActual;
+    PilaCartas* mazo;
+    PilaCartas* descarte;
+
+    ListCDJugadores* jugadores;
+    NodoJugador* jugadorActual;
+
+    bool sentidoHorario;
+    Carta* cartaSuperior;
+    ConfiguracionPartida config;
+    ReglasUno* reglas;
+    int roboAcumulado;
+    TipoAcumulacion tipoAcumulacionActual;
+
 
 public:
-    void iniciarJuego();
-    void direccionJuego();
-    void turno();
-    void aplicarEfectoCarta(Carta* carta);
-    bool finJuego();
-    void verificarGanador();
-    void reversarJuego();
-    void saltarJugador();
-    void tomarCartas(cantidad: int);
-    void llamadaUno();
-    void sumarCarta(atacante: Jugador*, afectado: Jugador*);
-};
+    Juego(ConfiguracionPartida config);
+    ~Juego();
+    ConfiguracionPartida getConfig();
 
+    void agregarJugador(Jugador* jugador);
+    void iniciarJuego();
+    void repartirCartasIniciales();
+    void jugarPartida();
+    void siguienteTurno();
+    void cambiarDireccion();
+    void saltarJugador();
+    void forzarRobo(int cantidad);
+    void elegirNuevoColor();
+    void hacerRobar(Jugador* jugador, int cantidad);
+
+    PilaCartas* obtenerMazo();
+    PilaCartas* obtenerDescarte();
+
+    Carta* obtenerCartaSuperior();
+    void colocarEnDescarte(Carta* carta);
+    bool terminoJuego();
+    void mostrarEstado();
+    void agregarCartasFlip();
+
+    void agregarAcumulacion(int cantidad, TipoAcumulacion tipoAcumulacion);
+    bool hayAcumulacionPendiente();
+    void ejecutarAcumulacionPendiente(Jugador* jugador);
+    TipoAcumulacion obtenerTipoAcumulacion();
+
+
+};
 
 #endif //JUEGOUNO_JUEGO_H
