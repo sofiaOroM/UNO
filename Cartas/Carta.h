@@ -7,6 +7,7 @@
 #include "../Juego.h"
 #include <string>
 using namespace std;
+class Juego;
 
 class Carta {
 protected:
@@ -17,10 +18,13 @@ public:
     virtual ~Carta();
 
     string obtenerColor();
-
+    void cambiarColor(string nuevoColor);
     virtual bool puedeJugarseSobre(Carta* cartaSuperior) = 0;
     virtual void aplicarEfecto(Juego* juego) = 0;
     virtual string mostrar() = 0;
+    virtual bool esComodin();
+    virtual bool esMasDos();
+    virtual bool esMasCuatro();
 };
 
 #endif //JUEGOUNO_CARTA_H
