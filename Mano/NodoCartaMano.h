@@ -5,7 +5,7 @@
 #ifndef JUEGOUNO_NODOCARTAMANO_H
 #define JUEGOUNO_NODOCARTAMANO_H
 
-#include "Carta.h"
+class Carta;
 
 class NodoCartaMano {
 public:

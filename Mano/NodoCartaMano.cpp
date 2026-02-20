@@ -3,6 +3,7 @@
 //
 
 #include "NodoCartaMano.h"
+#include "../Cartas/Carta.h"
 
 NodoCartaMano::NodoCartaMano(Carta* carta) {
     this->carta = carta;
