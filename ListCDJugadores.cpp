@@ -14,7 +14,11 @@ ListCDJugadores::ListCDJugadores()
 
 bool ListCDJugadores::estaVacia()
 {
-    return cabeza = nullptr;
+    if (cabeza == nullptr)
+    {
+        return true;
+    }
+    return false;
 }
 
 int ListCDJugadores::obtenerCantidad()
@@ -30,6 +34,7 @@ NodoJugador* ListCDJugadores::obtenerCabeza()
 void ListCDJugadores::insertarJugador(Jugador* jugador)
 {
     NodoJugador* nuevo = new NodoJugador(jugador);
+
     if (estaVacia())
     {
         cabeza = nuevo;
@@ -41,13 +46,12 @@ void ListCDJugadores::insertarJugador(Jugador* jugador)
 
     NodoJugador* ultimo = cabeza->anterior;
 
-    ultimo->siguiente = cabeza;
+    ultimo->siguiente = nuevo;
     nuevo->anterior = ultimo;
 
     nuevo->siguiente = cabeza;
     cabeza->anterior = nuevo;
     cantidad++;
-    return;
 }
 
 void ListCDJugadores::eliminarJugador(Jugador* jugador)
@@ -83,7 +87,6 @@ void ListCDJugadores::eliminarJugador(Jugador* jugador)
 
 NodoJugador* ListCDJugadores::jugadorSiguiente(NodoJugador* actual)
 {
-    if (actual == nullptr) return nullptr;
     return actual->siguiente;
 }
 
