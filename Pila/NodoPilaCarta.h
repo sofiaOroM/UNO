@@ -5,6 +5,8 @@
 #ifndef JUEGOUNO_NODOPILACARTA_H
 #define JUEGOUNO_NODOPILACARTA_H
 
+class Carta;
+
 class NodoPilaCarta {
 public:
     Carta* carta;

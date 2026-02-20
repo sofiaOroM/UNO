@@ -5,6 +5,8 @@
 #ifndef JUEGOUNO_PILACARTAS_H
 #define JUEGOUNO_PILACARTAS_H
 
+class Carta;
+class NodoPilaCarta;
 #include "NodoPilaCarta.h"
 
 class PilaCartas {
@@ -21,6 +23,11 @@ public:
     Carta* sacarCarta();
     Carta* verCartaSuperior();
     void vaciarPila();
+    void crearMazoCompleto(int nJugadores);
+    void generarUnMazoUNO();
+    void barajar();
+    void recargarDesde(PilaCartas* descarte);
+    void agregarCartasFlip(int nJugadores);
 };
 
 #endif //JUEGOUNO_PILACARTAS_H

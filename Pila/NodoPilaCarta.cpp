@@ -4,6 +4,7 @@
 
 #include "NodoPilaCarta.h"
 
+
 NodoPilaCarta::NodoPilaCarta(Carta* carta) {
     this->carta = carta;
     this->siguiente = nullptr;
