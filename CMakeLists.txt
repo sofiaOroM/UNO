@@ -23,4 +23,14 @@ add_executable(JuegoUno main.cpp
         Cartas/Carta.cpp
         Cartas/Carta.h
         Cartas/CartaNumero.cpp
-        Cartas/CartaNumero.h)
+        Cartas/CartaNumero.h
+        Cartas/CartaAccion.cpp
+        Cartas/CartaAccion.h
+        Cartas/CartaComodin.cpp
+        Cartas/CartaComodin.h
+        Reglas/ReglasUno.cpp
+        Reglas/ReglasUno.h
+        Reglas/ConfiguracionPartida.h
+        Reglas/TipoAcumulacion.h
+
+)
