@@ -5,10 +5,14 @@
 #ifndef JUEGOUNO_JUGADOR_H
 #define JUEGOUNO_JUGADOR_H
 #include <string>
+using namespace std;
+
+class Carta;
+class PilaCartas;
+class ListaManoCartas;
+
 #include "Mano/ListaManoCartas.h"
 #include "Pila/PilaCartas.h"
-#include "Cartas/Carta.h"
-using namespace std;
 
 
 class Jugador
@@ -27,7 +31,7 @@ public:
     string obtenerNombre();
     int obtenerCantidadCartas();
 
-    void robarCarta(PilaCartas* mazo);
+    void robarCarta(PilaCartas* mazo, PilaCartas* descarte);
     Carta* jugarCarta(int indice);
 
     bool tieneCartaJugable(Carta* cartaSuperior);

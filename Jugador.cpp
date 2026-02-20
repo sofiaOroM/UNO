@@ -3,7 +3,7 @@
 //
 
 #include "Jugador.h"
-#include "Carta.h"
+#include "./Cartas/Carta.h"
 #include "Pila/PilaCartas.h"
 #include "Mano/ListaManoCartas.h"
 
@@ -21,24 +21,26 @@ Jugador::~Jugador()
     delete mano;
 }
 
-void Jugador::robarCarta(PilaCartas* mazo)
-{
-    if (mano->estaVacia())
-    {
-        cout << "El mazo está vacio" << endl;
-        return;
+void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte) {
+
+    if (mazo->estaVacia()) {
+        mazo->recargarDesde(descarte);
     }
 
-    Carta* cartaRobada = mazo->sacarCarta();
-    mano->agregarCarta(cartaRobada);
+    Carta* carta = mazo->sacarCarta();
 
-    cout << nombre<< "robó una carta"<< endl;
+    if (carta != nullptr) {
+        mano->agregarCarta(carta);
+        cout << nombre << " robó una carta." << endl;
+    }
+    //cout << nombre << " robó: " << carta->mostrar() << endl;
 }
+
 
 Carta* Jugador::jugarCarta(int indice)
 {
     Carta* carta = mano->obtenerCartaEn(indice);
-    if (carta = nullptr)
+    if (carta == nullptr)
     {
         cout<<"indice invalido"<< endl;
         return nullptr;
@@ -75,6 +77,10 @@ void Jugador::reiniciarUNO()
 
 void Jugador::mostrarMano()
 {
-    cout << "Cartas de " << nombre << " : ";
+    cout << "Cartas de " << nombre << " : " << endl;
     mano->mostrarCartas();
+}
+
+string Jugador::obtenerNombre() {
+    return nombre;
 }
