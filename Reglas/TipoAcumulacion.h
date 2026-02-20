@@ -1,0 +1,14 @@
+//
+// Created by sofia on 20/02/2026.
+//
+
+#ifndef JUEGOUNO_TIPOACUMULACION_H
+#define JUEGOUNO_TIPOACUMULACION_H
+
+enum TipoAcumulacion
+{
+    SIN_ACUMULACION,
+    ACUM_MAS_DOS,
+    ACUM_MAS_CUATRO
+};
+#endif //JUEGOUNO_TIPOACUMULACION_H
