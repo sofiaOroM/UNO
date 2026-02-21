@@ -24,6 +24,7 @@ public:
     string mostrar();
     bool esComodin();
     bool esMasCuatro();
+    bool esCambioColor();
     int obtenerPrioridadTipo() const override;;
 };
 

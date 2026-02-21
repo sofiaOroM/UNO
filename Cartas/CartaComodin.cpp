@@ -46,7 +46,10 @@ bool CartaComodin::esMasCuatro()
 {
     return tipo == MAS_CUATRO;
 }
-
+bool CartaComodin::esCambioColor()
+{
+    return tipo == CAMBIO_COLOR;
+}
 int CartaComodin::obtenerPrioridadTipo() const
 {
     return 2;
