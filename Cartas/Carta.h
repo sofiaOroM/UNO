@@ -25,6 +25,8 @@ public:
     virtual bool esComodin();
     virtual bool esMasDos();
     virtual bool esMasCuatro();
+    virtual int obtenerPrioridadTipo() const = 0;
+    virtual int getNumero() const { return -1; }
 };
 
 #endif //JUEGOUNO_CARTA_H

@@ -9,13 +9,41 @@
 #include "Reglas/ReglasUno.h"
 #include "Cartas/CartaAccion.h"
 #include "Cartas/CartaComodin.h"
+#include <iomanip>
+#include <string>
 
 #include <iostream>
-
 using namespace std;
 
-Juego::Juego(ConfiguracionPartida configRecibida) {
+#define RESET   "\033[0m"
+#define ROJO    "\033[31m"
+#define VERDE   "\033[32m"
+#define AMARILLO "\033[33m"
+#define AZUL    "\033[34m"
+#define BLANCO  "\033[97m"
 
+
+string obtenerColorANSI(const string& texto)
+{
+    if (texto.find("Rojo") != string::npos)
+        return ROJO;
+
+    if (texto.find("Verde") != string::npos)
+        return VERDE;
+
+    if (texto.find("Azul") != string::npos)
+        return AZUL;
+
+    if (texto.find("Amarillo") != string::npos)
+        return AMARILLO;
+
+    if (texto.find("COMODIN") != string::npos)
+        return BLANCO;
+    return RESET;
+}
+
+Juego::Juego(ConfiguracionPartida configRecibida)
+{
     config = configRecibida;
     reglas = new ReglasUno(config);
 
@@ -32,8 +60,8 @@ Juego::Juego(ConfiguracionPartida configRecibida) {
     tipoAcumulacionActual = SIN_ACUMULACION;
 }
 
-Juego::~Juego() {
-
+Juego::~Juego()
+{
     delete mazo;
     delete descarte;
     delete jugadores;
@@ -45,75 +73,86 @@ ConfiguracionPartida Juego::getConfig()
     return config;
 }
 
-void Juego::agregarJugador(Jugador* jugador) {
-
+void Juego::agregarJugador(Jugador* jugador)
+{
     jugadores->insertarJugador(jugador);
 
-    if (jugadorActual == nullptr) {
+    if (jugadorActual == nullptr)
+    {
         jugadorActual = jugadores->obtenerCabeza();
     }
 }
 
-void Juego::iniciarJuego() {
-
+void Juego::iniciarJuego()
+{
     int n = jugadores->obtenerCantidad();
 
-    cout << endl<< "=== INICIANDO JUEGO UNO ==="<<endl;
+    cout << endl << "=== INICIANDO JUEGO UNO ===" << endl;
 
     mazo->crearMazoCompleto(n);
 
-    if (config.activarUnoFlip) {
-        cout << "Modo UNO Flip activado."<<endl;
+    if (config.activarUnoFlip)
+    {
+        cout << "Modo UNO Flip activado." << endl;
         mazo->agregarCartasFlip(n);
         mazo->barajar();
-
     }
 
     // Repartir cartas
     repartirCartasIniciales();
 
     // Primera carta de mesa
-    do {
+    do
+    {
         cartaSuperior = mazo->sacarCarta();
-    } while (cartaSuperior->esComodin());
+    }
+    while (cartaSuperior->esComodin());
 
     descarte->apilarCarta(cartaSuperior);
 
     cout << "Carta inicial: " << cartaSuperior->mostrar() << endl;
 }
 
-void Juego::repartirCartasIniciales() {
-
+void Juego::repartirCartasIniciales()
+{
     NodoJugador* aux = jugadores->obtenerCabeza();
 
-    do {
-
-        for (int i = 0; i < 7; i++) {
-            aux->jugador->robarCarta(mazo, descarte);
+    do
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            aux->jugador->robarCarta(mazo, descarte, true);
         }
 
         aux = jugadores->jugadorSiguiente(aux);
-
-    } while (aux != jugadores->obtenerCabeza());
+    }
+    while (aux != jugadores->obtenerCabeza());
+    do
+    {
+        aux->jugador->ordenarMano();
+        aux = jugadores->jugadorSiguiente(aux);
+    }
+    while (aux != jugadores->obtenerCabeza());
 }
 
-void Juego::jugarPartida() {
+void Juego::jugarPartida()
+{
+    cout << endl << "=== COMIENZA LA PARTIDA ===" << endl;
 
-    cout << endl<<"=== COMIENZA LA PARTIDA ==="<<endl;
-
-    while (!terminoJuego()) {
-
+    while (!terminoJuego())
+    {
         Jugador* jugador = jugadorActual->jugador;
 
-        cout << endl<<"---------------------------------"<<endl;
+        cout << endl << "---------------------------------" << endl;
         cout << "Turno de: " << jugador->obtenerNombre() << endl;
-        cout << "Carta superior: " << cartaSuperior->mostrar() << endl;
+        //cout << "Carta superior: " << cartaSuperior->mostrar() << endl;
+        mostrarCartaSuperior();
 
         jugador->mostrarMano();
 
         if (hayAcumulacionPendiente())
         {
-            cout << "Tienes un robo acumulado de "<< roboAcumulado << " cartas."<<endl;
+            cout << "Tienes un robo acumulado de " << roboAcumulado << " cartas." << endl;
 
             int opcion;
             cout << "Seleccione índice para intentar acumular (-1 para robar): ";
@@ -130,7 +169,7 @@ void Juego::jugarPartida() {
 
             if (!cartaElegida)
             {
-                cout << "Carta inválida."<<endl;
+                cout << "Carta inválida." << endl;
                 continue;
             }
 
@@ -144,24 +183,25 @@ void Juego::jugarPartida() {
 
                 colocarEnDescarte(cartaElegida);
 
-                cout << "¡Robo acumulado ahora es "<< roboAcumulado << "!"<<endl;
+                cout << "¡Robo acumulado ahora es " << roboAcumulado << "!" << endl;
 
                 siguienteTurno();
             }
             else
             {
-                cout << "No puedes acumular. Robas todo."<<endl;
+                cout << "No puedes acumular. Robas todo." << endl;
                 ejecutarAcumulacionPendiente(jugador);
                 siguienteTurno();
             }
 
             continue;
         }
-        if (!jugador->tieneCartaJugable(cartaSuperior)) {
-
+        if (!jugador->tieneCartaJugable(cartaSuperior))
+        {
             reglas->aplicarModoRobo(this, jugador);
 
-            if (config.tipoRobo == ROBO_UNA_Y_PASA) {
+            if (config.tipoRobo == ROBO_UNA_Y_PASA)
+            {
                 siguienteTurno();
                 continue;
             }
@@ -170,72 +210,77 @@ void Juego::jugarPartida() {
         cout << "Seleccione índice (-1 para pasar): ";
         cin >> opcion;
 
-        if (opcion == -1) {
-            cout << "Turno pasado."<<endl;
+        if (opcion == -1)
+        {
+            cout << "Turno pasado." << endl;
             siguienteTurno();
             continue;
         }
 
         Carta* cartaJugada = jugador->jugarCarta(opcion);
 
-        if (!cartaJugada) {
-            cout << "Carta inválida."<<endl;
+        if (!cartaJugada)
+        {
+            cout << "Carta inválida." << endl;
             continue;
         }
-       if (!cartaJugada->puedeJugarseSobre(cartaSuperior)) {
-
+        if (!cartaJugada->puedeJugarseSobre(cartaSuperior))
+        {
             cout << "No puedes jugar esa carta sobre "
-                 << cartaSuperior->mostrar() << endl;
+                << cartaSuperior->mostrar() << endl;
 
             jugador->robarCarta(mazo, descarte);
             continue;
         }
-       colocarEnDescarte(cartaJugada);
+        colocarEnDescarte(cartaJugada);
 
         cout << jugador->obtenerNombre()
-             << " jugó: " << cartaJugada->mostrar() << endl;
+            << " jugó: " << cartaJugada->mostrar() << endl;
 
         cartaJugada->aplicarEfecto(this);
 
-       reglas->verificarGritoUno(this, jugador);
+        reglas->verificarGritoUno(this, jugador);
 
-        if (jugador->haGanado()) {
-
-            if (reglas->puedeGanarConCartaNegra(cartaJugada)) {
-
-                cout << endl<<  "GANADOR: "
-                     << jugador->obtenerNombre() << endl;
+        if (jugador->haGanado())
+        {
+            if (reglas->puedeGanarConCartaNegra(cartaJugada))
+            {
+                cout << endl << "GANADOR: "
+                    << jugador->obtenerNombre() << endl;
                 return;
             }
         }
-       siguienteTurno();
+        siguienteTurno();
     }
 }
 
-void Juego::siguienteTurno() {
-
-    if (sentidoHorario) {
+void Juego::siguienteTurno()
+{
+    if (sentidoHorario)
+    {
         jugadorActual = jugadores->jugadorSiguiente(jugadorActual);
-    } else {
+    }
+    else
+    {
         jugadorActual = jugadores->jugadorAnterior(jugadorActual);
     }
 }
 
-void Juego::cambiarDireccion() {
-
+void Juego::cambiarDireccion()
+{
     sentidoHorario = !sentidoHorario;
     cout << "Dirección invertida!" << endl;
 }
 
-void Juego::saltarJugador() {
-
-    cout << "Jugador saltado!"<<endl;
+void Juego::saltarJugador()
+{
+    cout << "Jugador saltado!" << endl;
     siguienteTurno();
 }
 
-void Juego::forzarRobo(int cantidad) {
-
-    cout << "El siguiente jugador roba "<< cantidad << " cartas!"<<endl;
+void Juego::forzarRobo(int cantidad)
+{
+    cout << "El siguiente jugador roba " << cantidad << " cartas!" << endl;
 
     NodoJugador* siguiente;
 
@@ -247,8 +292,8 @@ void Juego::forzarRobo(int cantidad) {
     hacerRobar(siguiente->jugador, cantidad);
 }
 
-void Juego::elegirNuevoColor() {
-
+void Juego::elegirNuevoColor()
+{
     cout << "Elige un color (Rojo, Azul, Verde, Amarillo): ";
     string nuevo;
     cin >> nuevo;
@@ -258,41 +303,58 @@ void Juego::elegirNuevoColor() {
     cout << "Nuevo color elegido: " << nuevo << endl;
 }
 
-void Juego::hacerRobar(Jugador* jugador, int cantidad) {
+void Juego::hacerRobar(Jugador* jugador, int cantidad)
+{
+    cout << jugador->obtenerNombre() << " roba " << cantidad << " cartas." << endl;
 
-    cout << jugador->obtenerNombre() << " roba " << cantidad << " cartas."<<endl;
-
-    for (int i = 0; i < cantidad; i++) {
+    for (int i = 0; i < cantidad; i++)
+    {
         jugador->robarCarta(mazo, descarte);
     }
 }
 
-PilaCartas* Juego::obtenerMazo() {
+PilaCartas* Juego::obtenerMazo()
+{
     return mazo;
 }
 
-PilaCartas* Juego::obtenerDescarte() {
+PilaCartas* Juego::obtenerDescarte()
+{
     return descarte;
 }
 
-Carta* Juego::obtenerCartaSuperior() {
+Carta* Juego::obtenerCartaSuperior()
+{
     return cartaSuperior;
 }
 
-void Juego::colocarEnDescarte(Carta* carta) {
-
+void Juego::colocarEnDescarte(Carta* carta)
+{
     cartaSuperior = carta;
     descarte->apilarCarta(carta);
 }
 
-bool Juego::terminoJuego() {
+bool Juego::terminoJuego()
+{
     return false; // se rompe cuando alguien gana
 }
 
-void Juego::mostrarEstado() {
-
+void Juego::mostrarEstado()
+{
     cout << "Carta superior: "
-         << cartaSuperior->mostrar() << endl;
+        << cartaSuperior->mostrar() << endl;
+}
+
+void Juego::mostrarCartaSuperior()
+{
+    string texto = cartaSuperior->mostrar();
+    string color = obtenerColorANSI(texto);
+    cout << endl << "================ CARTA SUPERIOR ================" << endl;
+    cout << color;
+    cout << "      +----------------------+" << endl;
+    cout << "      | " << left << setw(20) << texto << " |" << endl;
+    cout << "      +----------------------+" << endl;
+    cout << RESET << endl;
 }
 
 void Juego::agregarAcumulacion(int cantidad, TipoAcumulacion tipoAcumulacion)
@@ -313,12 +375,12 @@ TipoAcumulacion Juego::obtenerTipoAcumulacion()
 
 void Juego::ejecutarAcumulacionPendiente(Jugador* jugador)
 {
-    for(int i = 0; i < roboAcumulado; i++)
+    for (int i = 0; i < roboAcumulado; i++)
     {
         jugador->robarCarta(mazo, descarte);
     }
 
-    cout << jugador->obtenerNombre()<< " roba " << roboAcumulado << " cartas acumuladas."<<endl;
+    cout << jugador->obtenerNombre() << " roba " << roboAcumulado << " cartas acumuladas." << endl;
 
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;

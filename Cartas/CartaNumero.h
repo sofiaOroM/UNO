@@ -18,6 +18,8 @@ public:
     string mostrar();
 
     int obtenerNumero();
+    int obtenerPrioridadTipo() const override;
+    int getNumero() const;
 };
 
 #endif //JUEGOUNO_CARTANUMERO_H

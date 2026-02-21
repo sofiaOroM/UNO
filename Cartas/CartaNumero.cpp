@@ -35,3 +35,13 @@ void CartaNumero::aplicarEfecto(Juego* juego) {
 string CartaNumero::mostrar() {
     return color + " " + to_string(numero);
 }
+
+int CartaNumero::obtenerPrioridadTipo() const
+{
+    return 0; // números primero
+}
+
+int CartaNumero::getNumero() const
+{
+    return numero;
+}

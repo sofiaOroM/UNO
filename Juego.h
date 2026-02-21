@@ -53,6 +53,7 @@ public:
     void colocarEnDescarte(Carta* carta);
     bool terminoJuego();
     void mostrarEstado();
+    void mostrarCartaSuperior();
     void agregarCartasFlip();
 
     void agregarAcumulacion(int cantidad, TipoAcumulacion tipoAcumulacion);

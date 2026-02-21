@@ -24,6 +24,7 @@ public:
     string mostrar();
     bool esComodin();
     bool esMasCuatro();
+    int obtenerPrioridadTipo() const override;;
 };
 
 #endif //JUEGOUNO_CARTACOMODIN_H

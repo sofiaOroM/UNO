@@ -28,6 +28,8 @@ public:
     int buscarPrimeraJugable(Carta* cartaSuperior);
     void mostrarCartas();
     void vaciarLista();
+    bool debeIrAntes(Carta* a, Carta* b);
+    void ordenarMano();
 };
 
 #endif //JUEGOUNO_LISTAMANOCARTAS_H

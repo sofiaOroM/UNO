@@ -60,3 +60,7 @@ bool CartaAccion::esMasDos()
 {
     return tipo == MAS_DOS;
 }
+int CartaAccion::obtenerPrioridadTipo() const
+{
+    return 1;
+}

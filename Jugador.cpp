@@ -21,7 +21,7 @@ Jugador::~Jugador()
     delete mano;
 }
 
-void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte) {
+void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte, bool esReparto) {
 
     if (mazo->estaVacia()) {
         mazo->recargarDesde(descarte);
@@ -29,11 +29,14 @@ void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte) {
 
     Carta* carta = mazo->sacarCarta();
 
-    if (carta != nullptr) {
+    if (carta != nullptr)
+    {
         mano->agregarCarta(carta);
         cout << nombre << " robó una carta." << endl;
+        if (!esReparto)
+            mano->ordenarMano();
+        cout << nombre << " robó: " << carta->mostrar() << endl;
     }
-    //cout << nombre << " robó: " << carta->mostrar() << endl;
 }
 
 
@@ -83,4 +86,9 @@ void Jugador::mostrarMano()
 
 string Jugador::obtenerNombre() {
     return nombre;
+}
+
+void Jugador::ordenarMano()
+{
+    mano->ordenarMano();
 }

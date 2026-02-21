@@ -31,7 +31,7 @@ public:
     string obtenerNombre();
     int obtenerCantidadCartas();
 
-    void robarCarta(PilaCartas* mazo, PilaCartas* descarte);
+    void robarCarta(PilaCartas* mazo, PilaCartas* descarte, bool esReparto = false);
     Carta* jugarCarta(int indice);
 
     bool tieneCartaJugable(Carta* cartaSuperior);
@@ -42,6 +42,7 @@ public:
     void reiniciarUNO();
 
     void mostrarMano();
+    void ordenarMano();
 };
 
 #endif //JUEGOUNO_JUGADOR_H

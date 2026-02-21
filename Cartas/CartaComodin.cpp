@@ -34,7 +34,7 @@ void CartaComodin::aplicarEfecto(Juego* juego) {
 string CartaComodin::mostrar() {
 
     if (tipo == CAMBIO_COLOR)
-        return "[COMODIN] Cambiar Color";
+        return "[COMODIN] Cambiar Color" ;
 
     return "[COMODIN] +4";
 }
@@ -47,3 +47,7 @@ bool CartaComodin::esMasCuatro()
     return tipo == MAS_CUATRO;
 }
 
+int CartaComodin::obtenerPrioridadTipo() const
+{
+    return 2;
+}

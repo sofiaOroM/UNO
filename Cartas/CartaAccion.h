@@ -24,6 +24,7 @@ public:
     void aplicarEfecto(Juego* juego);
     string mostrar();
     bool esMasDos();
+    int obtenerPrioridadTipo() const override;;
 };
 
 #endif //JUEGOUNO_CARTAACCION_H
