@@ -53,9 +53,55 @@ Carta* Jugador::jugarCarta(int indice)
     return carta;
 }
 
+
 bool Jugador::tieneCartaJugable(Carta* cartaSuperior)
 {
     return mano->tieneCartaJugable(cartaSuperior);
+}
+
+bool Jugador::tieneMasCuatro()
+{
+    NodoCartaMano* actual = mano->obtenerCabeza();
+
+    while (actual)
+    {
+        if (actual->carta->esMasCuatro())
+            return true;
+
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
+
+bool Jugador::tieneColor(string color)
+{
+    NodoCartaMano* actual = mano->obtenerCabeza();
+
+    while (actual)
+    {
+        if (actual->carta->obtenerColor() == color)
+            return true;
+
+        actual = actual->siguiente;
+    }
+
+    return false;
+}
+
+bool Jugador::tieneNumero(int numero)
+{
+    NodoCartaMano* actual = mano->obtenerCabeza();
+
+    while (actual)
+    {
+        if (actual->carta->getNumero() == numero)
+            return true;
+
+        actual = actual->siguiente;
+    }
+
+    return false;
 }
 
 bool Jugador::haGanado()

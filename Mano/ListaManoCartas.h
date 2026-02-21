@@ -4,7 +4,7 @@
 
 #ifndef JUEGOUNO_LISTAMANOCARTAS_H
 #define JUEGOUNO_LISTAMANOCARTAS_H
-
+#include <string>
 class Carta;
 class NodoCartaMano;
 
@@ -21,6 +21,7 @@ public:
     ~ListaManoCartas();
     bool estaVacia();
     int obtenerCantidad();
+    NodoCartaMano* obtenerCabeza();
     void agregarCarta(Carta* carta);
     void eliminarCarta(int indice);
     Carta* obtenerCartaEn(int indice);

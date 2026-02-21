@@ -32,12 +32,6 @@ string obtenerColorANSI1(const string& texto)
 
     if (texto.find("COMODIN") != string::npos)
         return BLANCO;
-    if (texto.find("SALTO") != string::npos)
-        return BLANCO;
-    if (texto.find("REVERSA") != string::npos)
-        return BLANCO;
-    if (texto.find("+2") != string::npos)
-        return BLANCO;
     return RESET;
 }
 
@@ -61,6 +55,11 @@ bool ListaManoCartas::estaVacia()
 int ListaManoCartas::obtenerCantidad()
 {
     return cantidad;
+}
+
+NodoCartaMano* ListaManoCartas::obtenerCabeza()
+{
+    return cabeza;
 }
 
 void ListaManoCartas::agregarCarta(Carta* carta)
@@ -163,7 +162,7 @@ void ListaManoCartas::mostrarCartas()
 {
     if (estaVacia())
     {
-        cout << "Mano vacía.\n";
+        cout << "Mano vacía."<<endl;
         return;
     }
 
@@ -193,7 +192,7 @@ void ListaManoCartas::mostrarCartas()
             string color = obtenerColorANSI1(cartas[i]->carta->mostrar());
             cout << color << "+------------------+" << RESET << "   ";
         }
-        cout << "\n";
+        cout << ""<<endl;
 
         // ----- Línea central (centrado manual real) -----
         for (int i = 0; i < cantidad; i++)
@@ -216,7 +215,7 @@ void ListaManoCartas::mostrarCartas()
                  << "|"
                  << RESET << "   ";
         }
-        cout << "\n";
+        cout << ""<<endl;
 
         // ----- Línea inferior -----
         for (int i = 0; i < cantidad; i++)
@@ -224,7 +223,7 @@ void ListaManoCartas::mostrarCartas()
             string color = obtenerColorANSI1(cartas[i]->carta->mostrar());
             cout << color << "+------------------+" << RESET << "   ";
         }
-        cout << "\n";
+        cout << ""<<endl;
 
         // ----- Índices abajo perfectamente centrados -----
         for (int i = 0; i < cantidad; i++)
@@ -240,7 +239,7 @@ void ListaManoCartas::mostrarCartas()
                  << string(der, ' ')
                  << "   ";
         }
-        cout << "\n\n";
+        cout << ""<<endl<<""<<endl;
 
         inicioFila = actual;
     }

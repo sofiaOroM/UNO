@@ -35,6 +35,9 @@ public:
     Carta* jugarCarta(int indice);
 
     bool tieneCartaJugable(Carta* cartaSuperior);
+    bool tieneMasCuatro();
+    bool tieneColor(string color);
+    bool tieneNumero(int numero);
     bool haGanado();
 
     void gritarUNO();

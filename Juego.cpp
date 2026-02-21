@@ -10,6 +10,8 @@
 #include "Cartas/CartaAccion.h"
 #include "Cartas/CartaComodin.h"
 #include <iomanip>
+#include <cctype>
+#include <algorithm>
 #include <string>
 
 #include <iostream>
@@ -145,14 +147,25 @@ void Juego::jugarPartida()
 
         cout << endl << "---------------------------------" << endl;
         cout << "Turno de: " << jugador->obtenerNombre() << endl;
-        //cout << "Carta superior: " << cartaSuperior->mostrar() << endl;
         mostrarCartaSuperior();
+        if (cartaSuperior->esMasCuatro() || cartaSuperior->esCambioColor())
+        {
+            cout << "     Color superior:" << cartaSuperior->obtenerColor() << endl;
+        }
 
         jugador->mostrarMano();
 
         if (hayAcumulacionPendiente())
         {
-            cout << "Tienes un robo acumulado de " << roboAcumulado << " cartas." << endl;
+            cout << "Tienes un robo acumulado de "
+                 << roboAcumulado << " cartas." << endl;
+
+            if (!config.permitirAcumulacion)
+            {
+                ejecutarAcumulacionPendiente(jugador);
+                siguienteTurno();
+                continue;
+            }
 
             int opcion;
             cout << "Seleccione índice para intentar acumular (-1 para robar): ";
@@ -160,7 +173,17 @@ void Juego::jugarPartida()
 
             if (opcion == -1)
             {
-                ejecutarAcumulacionPendiente(jugador);
+                // Si es +4 y el reto está activado
+                if (config.permitirRetoMasCuatro &&
+                    tipoAcumulacionActual == ACUM_MAS_CUATRO)
+                {
+                    resolverRetoMasCuatro(cartaAntesDelMasCuatro);
+                }
+                else
+                {
+                    ejecutarAcumulacionPendiente(jugador);
+                }
+
                 siguienteTurno();
                 continue;
             }
@@ -179,11 +202,15 @@ void Juego::jugarPartida()
                     agregarAcumulacion(2, ACUM_MAS_DOS);
 
                 if (cartaElegida->esMasCuatro())
+                {
+                    colorAntesDelMasCuatro = cartaSuperior->obtenerColor();
                     agregarAcumulacion(4, ACUM_MAS_CUATRO);
+                }
 
                 colocarEnDescarte(cartaElegida);
 
-                cout << "¡Robo acumulado ahora es " << roboAcumulado << "!" << endl;
+                cout << "¡Robo acumulado ahora es "
+                     << roboAcumulado << "!" << endl;
 
                 siguienteTurno();
             }
@@ -196,6 +223,7 @@ void Juego::jugarPartida()
 
             continue;
         }
+
         if (!jugador->tieneCartaJugable(cartaSuperior))
         {
             reglas->aplicarModoRobo(this, jugador);
@@ -218,24 +246,28 @@ void Juego::jugarPartida()
         }
 
         Carta* cartaJugada = jugador->jugarCarta(opcion);
-
         if (!cartaJugada)
         {
             cout << "Carta inválida." << endl;
             continue;
         }
+
         if (!cartaJugada->puedeJugarseSobre(cartaSuperior))
         {
-            cout << "No puedes jugar esa carta sobre "
-                << cartaSuperior->mostrar() << endl;
-
+            cout << "No puedes jugar esa carta sobre " << cartaSuperior->mostrar() << endl;
             jugador->robarCarta(mazo, descarte);
             continue;
         }
+
+        if (cartaJugada->esMasCuatro())
+        {
+            cartaAntesDelMasCuatro = cartaSuperior;
+            colorAntesDelMasCuatro = cartaSuperior->obtenerColor();
+            cout << colorAntesDelMasCuatro << endl;
+        }
         colocarEnDescarte(cartaJugada);
 
-        cout << jugador->obtenerNombre()
-            << " jugó: " << cartaJugada->mostrar() << endl;
+        cout << jugador->obtenerNombre() << " jugó: " << cartaJugada->mostrar() << endl;
 
         cartaJugada->aplicarEfecto(this);
 
@@ -245,8 +277,7 @@ void Juego::jugarPartida()
         {
             if (reglas->puedeGanarConCartaNegra(cartaJugada))
             {
-                cout << endl << "GANADOR: "
-                    << jugador->obtenerNombre() << endl;
+                cout << endl << "GANADOR: " << jugador->obtenerNombre() << endl;
                 return;
             }
         }
@@ -294,12 +325,18 @@ void Juego::forzarRobo(int cantidad)
 
 void Juego::elegirNuevoColor()
 {
+    string colores[4] = {"Rojo", "Azul", "Verde", "Amarillo"};
     cout << "Elige un color (Rojo, Azul, Verde, Amarillo): ";
     string nuevo;
     cin >> nuevo;
-
+    if (!nuevo.empty())
+    {
+        // Convierte el primer carácter a mayúscula y el resto en minuscula
+        nuevo[0] = toupper(nuevo[0]);
+        transform(nuevo.begin() + 1, nuevo.end(), nuevo.begin() + 1,
+                  [](unsigned char c) { return std::tolower(c); });
+    }
     cartaSuperior->cambiarColor(nuevo);
-
     cout << "Nuevo color elegido: " << nuevo << endl;
 }
 
@@ -382,6 +419,51 @@ void Juego::ejecutarAcumulacionPendiente(Jugador* jugador)
 
     cout << jugador->obtenerNombre() << " roba " << roboAcumulado << " cartas acumuladas." << endl;
 
+    roboAcumulado = 0;
+    tipoAcumulacionActual = SIN_ACUMULACION;
+}
+
+void Juego::resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro)
+{
+    NodoJugador* siguiente = jugadorActual;
+    NodoJugador* jugadorQueJugo = jugadores->jugadorSiguiente(jugadorActual);
+
+    cout << siguiente->jugador->obtenerNombre() << ", ¿deseas retar el +4?" << endl;;
+    cout << "1) Sí       2) No" << endl;
+    cout << "Opción: ";
+
+    int opcion;
+    cin >> opcion;
+
+    string colorAnterior = colorAntesDelMasCuatro;
+
+    if (opcion == 1)
+    {
+        if (jugadorQueJugo->jugador->tieneColor(colorAnterior) || jugadorQueJugo->jugador->tieneCartaJugable(
+            cartaAntesDelMasCuatro))
+        {
+            cout << "El +4 fue ilegal." << endl;;
+            cout << jugadorQueJugo->jugador->obtenerNombre() << " roba 4 cartas." << endl;
+
+            for (int i = 0; i < 4; i++)
+                jugadorQueJugo->jugador->robarCarta(mazo, descarte);
+        }
+        else
+        {
+            cout << "El +4 fue válido." << endl;
+            cout << siguiente->jugador->obtenerNombre() << " roba 6 cartas." << endl;
+
+            for (int i = 0; i < 6; i++)
+                siguiente->jugador->robarCarta(mazo, descarte);
+        }
+    }
+    else
+    {
+        cout << siguiente->jugador->obtenerNombre() << " roba 4 cartas." << endl;
+
+        for (int i = 0; i < 4; i++)
+            siguiente->jugador->robarCarta(mazo, descarte);
+    }
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;
 }

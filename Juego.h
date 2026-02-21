@@ -23,6 +23,8 @@ private:
     NodoJugador* jugadorActual;
 
     bool sentidoHorario;
+    string colorAntesDelMasCuatro;
+    Carta* cartaAntesDelMasCuatro;
     Carta* cartaSuperior;
     ConfiguracionPartida config;
     ReglasUno* reglas;
@@ -60,8 +62,7 @@ public:
     bool hayAcumulacionPendiente();
     void ejecutarAcumulacionPendiente(Jugador* jugador);
     TipoAcumulacion obtenerTipoAcumulacion();
-
-
+    void resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro);
 };
 
 #endif //JUEGOUNO_JUEGO_H

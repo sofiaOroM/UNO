@@ -28,3 +28,7 @@ bool Carta::esMasDos() {
 bool Carta::esMasCuatro() {
     return false;
 }
+
+bool Carta::esCambioColor() {
+    return false;
+}
