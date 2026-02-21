@@ -25,7 +25,7 @@ public:
     virtual bool esComodin();
     virtual bool esMasDos();
     virtual bool esMasCuatro();
-    bool esCambioColor();
+    virtual bool esCambioColor();
     virtual int obtenerPrioridadTipo() const = 0;
     virtual int getNumero() const { return -1; }
 };
