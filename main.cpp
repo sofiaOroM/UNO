@@ -99,8 +99,6 @@ int pedirCantidadJugadores()
 
 int main()
 {
-    srand(time(nullptr));
-
     mostrarTitulo();
 
     int modo = seleccionarModoJuego();

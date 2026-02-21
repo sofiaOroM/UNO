@@ -5,7 +5,40 @@
 #include "ListaManoCartas.h"
 #include "../Cartas/Carta.h"
 #include <iostream>
+#include <iomanip>
+#include <string>
 
+#define RESET   "\033[0m"
+#define ROJO    "\033[31m"
+#define VERDE   "\033[32m"
+#define AMARILLO "\033[33m"
+#define AZUL    "\033[34m"
+#define BLANCO  "\033[97m"
+
+
+string obtenerColorANSI(const string& texto)
+{
+#ifdef _WIN32
+    return "";
+#else
+    if (texto.find("Rojo") != string::npos)
+        return ROJO;
+
+    if (texto.find("Verde") != string::npos)
+        return VERDE;
+
+    if (texto.find("Azul") != string::npos)
+        return AZUL;
+
+    if (texto.find("Amarillo") != string::npos)
+        return AMARILLO;
+
+    if (texto.find("COMODIN") != string::npos)
+        return BLANCO;
+#endif
+
+    return "";
+}
 ListaManoCartas::ListaManoCartas() {
     cabeza = nullptr;
     cola = nullptr;
@@ -116,24 +149,37 @@ int ListaManoCartas::buscarPrimeraJugable(Carta* cartaSuperior) {
 
     return -1;
 }
-
-void ListaManoCartas::mostrarCartas() {
-
+void ListaManoCartas::mostrarCartas()
+{
     if (estaVacia()) {
-        cout << "Mano vacía."<<endl;
+        cout << "Mano vacía." << endl;
         return;
     }
 
     NodoCartaMano* actual = cabeza;
     int i = 0;
+    const int CARTAS_POR_FILA = 5;
 
-    while (actual != nullptr) {
-        cout <<"    "<< i << ") " << actual->carta->mostrar() << endl;
+    while (actual != nullptr)
+    {
+        string textoCarta = actual->carta->mostrar();
+        string color = obtenerColorANSI(textoCarta);
+
+        cout << setw(2) << i << ") "
+             << color
+             << left << setw(20)
+             << ("[" + textoCarta + "]")
+             << RESET;
+
         actual = actual->siguiente;
         i++;
-    }
-    cout << "[DEBUG] cantidad=" << cantidad << endl;
 
+        if (i % CARTAS_POR_FILA == 0)
+            cout << endl;
+    }
+
+    if (i % CARTAS_POR_FILA != 0)
+        cout << endl;
 }
 
 void ListaManoCartas::vaciarLista() {
