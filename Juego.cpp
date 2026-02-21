@@ -15,6 +15,8 @@
 #include <string>
 
 #include <iostream>
+
+#include "Cartas/CartaTransferenciaColor.h"
 using namespace std;
 
 #define RESET   "\033[0m"
@@ -150,15 +152,14 @@ void Juego::jugarPartida()
         mostrarCartaSuperior();
         if (cartaSuperior->esMasCuatro() || cartaSuperior->esCambioColor())
         {
-            cout << "     Color superior:" << cartaSuperior->obtenerColor() << endl;
+            cout << "     Color en juego:" << cartaSuperior->obtenerColor() << endl;
         }
 
         jugador->mostrarMano();
 
         if (hayAcumulacionPendiente())
         {
-            cout << "Tienes un robo acumulado de "
-                 << roboAcumulado << " cartas." << endl;
+            cout << "Tienes un robo acumulado de " << roboAcumulado << " cartas." << endl;
 
             if (!config.permitirAcumulacion)
             {
@@ -210,7 +211,7 @@ void Juego::jugarPartida()
                 colocarEnDescarte(cartaElegida);
 
                 cout << "¡Robo acumulado ahora es "
-                     << roboAcumulado << "!" << endl;
+                    << roboAcumulado << "!" << endl;
 
                 siguienteTurno();
             }
@@ -325,7 +326,6 @@ void Juego::forzarRobo(int cantidad)
 
 void Juego::elegirNuevoColor()
 {
-    string colores[4] = {"Rojo", "Azul", "Verde", "Amarillo"};
     cout << "Elige un color (Rojo, Azul, Verde, Amarillo): ";
     string nuevo;
     cin >> nuevo;
@@ -466,4 +466,21 @@ void Juego::resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro)
     }
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;
+}
+
+Jugador* Juego::obtenerJugadorActual()
+{
+    return jugadorActual->jugador;
+}
+
+Jugador* Juego::obtenerJugadorSiguiente()
+{
+    NodoJugador* siguiente;
+
+    if (sentidoHorario)
+        siguiente = jugadores->jugadorSiguiente(jugadorActual);
+    else
+        siguiente = jugadores->jugadorAnterior(jugadorActual);
+
+    return siguiente->jugador;
 }

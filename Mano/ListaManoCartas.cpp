@@ -345,3 +345,36 @@ bool ListaManoCartas::debeIrAntes(Carta* a, Carta* b)
 
     return false;
 }
+
+void ListaManoCartas::transferirCartasDeColor(std::string color, ListaManoCartas* destino)
+{
+    NodoCartaMano* actual = cabeza;
+    NodoCartaMano* anterior = nullptr;
+
+    while (actual != nullptr)
+    {
+        if (actual->carta->obtenerColor() == color)
+        {
+            NodoCartaMano* aEliminar = actual;
+
+            if (anterior == nullptr)
+            {
+                cabeza = actual->siguiente;
+                actual = actual->siguiente;
+            }
+            else
+            {
+                anterior->siguiente = actual->siguiente;
+                actual = actual->siguiente;
+            }
+
+            destino->agregarCarta(aEliminar->carta);
+            delete aEliminar;
+        }
+        else
+        {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+    }
+}

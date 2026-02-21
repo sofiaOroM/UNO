@@ -31,6 +31,7 @@ public:
     void vaciarLista();
     bool debeIrAntes(Carta* a, Carta* b);
     void ordenarMano();
+    void transferirCartasDeColor(std::string color, ListaManoCartas* destino);
 };
 
 #endif //JUEGOUNO_LISTAMANOCARTAS_H

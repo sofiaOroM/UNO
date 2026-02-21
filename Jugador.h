@@ -46,6 +46,7 @@ public:
 
     void mostrarMano();
     void ordenarMano();
+    void transferirCartasDeColor(string color, Jugador* destino);
 };
 
 #endif //JUEGOUNO_JUGADOR_H

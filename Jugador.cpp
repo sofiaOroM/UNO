@@ -138,3 +138,8 @@ void Jugador::ordenarMano()
 {
     mano->ordenarMano();
 }
+
+void Jugador::transferirCartasDeColor(string color, Jugador* destino)
+{
+    mano->transferirCartasDeColor(color, destino->mano);
+}

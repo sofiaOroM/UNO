@@ -63,6 +63,8 @@ public:
     void ejecutarAcumulacionPendiente(Jugador* jugador);
     TipoAcumulacion obtenerTipoAcumulacion();
     void resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro);
+    Jugador* obtenerJugadorActual();
+    Jugador* obtenerJugadorSiguiente();
 };
 
 #endif //JUEGOUNO_JUEGO_H
