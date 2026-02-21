@@ -157,15 +157,14 @@ void Juego::jugarPartida() {
 
             continue;
         }
-
         if (!jugador->tieneCartaJugable(cartaSuperior)) {
-
-            cout << jugador->obtenerNombre() << " no tiene carta jugable."<<endl;
 
             reglas->aplicarModoRobo(this, jugador);
 
-            siguienteTurno();
-            continue;
+            if (config.tipoRobo == ROBO_UNA_Y_PASA) {
+                siguienteTurno();
+                continue;
+            }
         }
         int opcion;
         cout << "Seleccione índice (-1 para pasar): ";
@@ -319,8 +318,7 @@ void Juego::ejecutarAcumulacionPendiente(Jugador* jugador)
         jugador->robarCarta(mazo, descarte);
     }
 
-    cout << jugador->obtenerNombre()
-         << " roba " << roboAcumulado << " cartas acumuladas."<<endl;
+    cout << jugador->obtenerNombre()<< " roba " << roboAcumulado << " cartas acumuladas."<<endl;
 
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;

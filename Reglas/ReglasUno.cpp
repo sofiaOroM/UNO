@@ -27,9 +27,31 @@ bool ReglasUno::puedeAcumular(Carta* carta, TipoAcumulacion tipoActual)
 
 void ReglasUno::aplicarModoRobo(Juego* juego, Jugador* jugador)
 {
-    // Por ahora siempre roba solo 1 carta
-    jugador->robarCarta(juego->obtenerMazo(),
-                        juego->obtenerDescarte());
+    if (config.tipoRobo == ROBO_UNA_Y_PASA)
+    {
+        cout << jugador->obtenerNombre()
+             << " roba 1 carta y pasa turno."<<endl;
+
+        jugador->robarCarta(
+            juego->obtenerMazo(),
+            juego->obtenerDescarte()
+        );
+
+        return;
+    }
+
+    cout << jugador->obtenerNombre()
+         << " roba hasta poder jugar."<<endl;
+
+    Carta* superior = juego->obtenerCartaSuperior();
+
+    while (!jugador->tieneCartaJugable(superior))
+    {
+        jugador->robarCarta(juego->obtenerMazo(),juego->obtenerDescarte());
+    }
+
+    cout << "Ahora puedes jugar."<<endl;
+    jugador->mostrarMano();
 }
 
 void ReglasUno::verificarGritoUno(Juego* juego, Jugador* jugador)
