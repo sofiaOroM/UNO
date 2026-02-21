@@ -18,9 +18,6 @@
 
 string obtenerColorANSI(const string& texto)
 {
-#ifdef _WIN32
-    return "";
-#else
     if (texto.find("Rojo") != string::npos)
         return ROJO;
 
@@ -35,9 +32,7 @@ string obtenerColorANSI(const string& texto)
 
     if (texto.find("COMODIN") != string::npos)
         return BLANCO;
-#endif
-
-    return "";
+    return RESET;
 }
 ListaManoCartas::ListaManoCartas() {
     cabeza = nullptr;
