@@ -50,8 +50,8 @@ public:
 
     PilaCartas* obtenerMazo();
     PilaCartas* obtenerDescarte();
-
     Carta* obtenerCartaSuperior();
+
     void colocarEnDescarte(Carta* carta);
     bool terminoJuego();
     void mostrarEstado();
@@ -63,6 +63,7 @@ public:
     void ejecutarAcumulacionPendiente(Jugador* jugador);
     TipoAcumulacion obtenerTipoAcumulacion();
     void resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro);
+    ListCDJugadores* obtenerListCDJugadores();
     Jugador* obtenerJugadorActual();
     Jugador* obtenerJugadorSiguiente();
 };

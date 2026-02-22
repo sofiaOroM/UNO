@@ -62,6 +62,7 @@ Juego::Juego(ConfiguracionPartida configRecibida)
 
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;
+    time(nullptr);
 }
 
 Juego::~Juego()
@@ -378,8 +379,7 @@ bool Juego::terminoJuego()
 
 void Juego::mostrarEstado()
 {
-    cout << "Carta superior: "
-        << cartaSuperior->mostrar() << endl;
+    cout << "Carta superior: " << cartaSuperior->mostrar() << endl;
 }
 
 void Juego::mostrarCartaSuperior()
@@ -466,6 +466,11 @@ void Juego::resolverRetoMasCuatro(Carta* cartaAntesDelMasCuatro)
     }
     roboAcumulado = 0;
     tipoAcumulacionActual = SIN_ACUMULACION;
+}
+
+ListCDJugadores* Juego::obtenerListCDJugadores()
+{
+    return jugadores;
 }
 
 Jugador* Juego::obtenerJugadorActual()

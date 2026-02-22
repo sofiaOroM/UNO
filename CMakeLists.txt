@@ -31,6 +31,8 @@ add_executable(JuegoUno main.cpp
         Cartas/CartaComodin.h
         Cartas/CartaTransferenciaColor.cpp
         Cartas/CartaTransferenciaColor.h
+        Cartas/CartaRoboAleatorio.cpp
+        Cartas/CartaRoboAleatorio.h
         Reglas/ReglasUno.cpp
         Reglas/ReglasUno.h
         Reglas/ConfiguracionPartida.h

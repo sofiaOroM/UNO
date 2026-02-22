@@ -10,6 +10,7 @@
 #include "../Cartas/CartaComodin.h"
 #include <iostream>
 
+#include "../Cartas/CartaRoboAleatorio.h"
 #include "../Cartas/CartaTransferenciaColor.h"
 using namespace std;
 
@@ -125,6 +126,7 @@ void PilaCartas::generarUnMazoUNO()
     }
 
     apilarCarta(new CartaTransferenciaColor());
+    apilarCarta(new CartaRoboAleatorio());
 }
 
 void PilaCartas::barajar()
