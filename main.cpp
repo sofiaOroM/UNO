@@ -84,13 +84,13 @@ int pedirCantidadJugadores()
 
     cout << "¿Cuántos jugadores participarán?"<<endl;
     cout << "-----------------------------------------"<<endl;
-    cout << "(mínimo 2, máximo 12)"<<endl;
+    cout << "(mínimo 2)"<<endl;
     cout << "Cantidad: ";
     cin >> n;
 
-    while (n < 2 || n > 12)
+    while (n < 2)
     {
-        cout << "Cantidad inválida. Ingrese entre 2 y 12: ";
+        cout << "Cantidad inválida. Deben ser más de 2 jugadores: ";
         cin >> n;
     }
 

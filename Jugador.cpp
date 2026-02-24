@@ -25,6 +25,7 @@ void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte, bool esReparto)
 
     if (mazo->estaVacia()) {
         mazo->recargarDesde(descarte);
+        cout << descarte->obtenerCantidad() << endl;
     }
 
     Carta* carta = mazo->sacarCarta();
@@ -35,7 +36,7 @@ void Jugador::robarCarta(PilaCartas* mazo, PilaCartas* descarte, bool esReparto)
         cout << nombre << " robó una carta." << endl;
         if (!esReparto)
             mano->ordenarMano();
-        cout << nombre << " robó: " << carta->mostrar() << endl;
+        //cout << nombre << " robó: " << carta->mostrar() << endl;
     }
 }
 

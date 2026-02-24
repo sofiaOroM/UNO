@@ -15,6 +15,7 @@
 #include <string>
 
 #include <iostream>
+#include <limits>
 
 #include "Cartas/CartaTransferenciaColor.h"
 using namespace std;
@@ -303,6 +304,15 @@ void Juego::siguienteTurno()
     {
         jugadorActual = jugadores->jugadorAnterior(jugadorActual);
     }
+    cout << "Presione enter para pasar al siguiente jugador" << endl;
+    cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
+    cin.get();
+
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 void Juego::cambiarDireccion()
@@ -315,6 +325,7 @@ void Juego::saltarJugador()
 {
     cout << "Jugador saltado!" << endl;
     siguienteTurno();
+    cout << "Jugador "<< jugadorActual->jugador->obtenerNombre()  <<" te han saltado!" << endl;
 }
 
 void Juego::forzarRobo(int cantidad)
