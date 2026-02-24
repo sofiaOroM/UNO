@@ -237,7 +237,7 @@ void Juego::jugarPartida()
             }
         }
         int opcion;
-        cout << "Seleccione índice (-1 para pasar): ";
+        cout << "Seleccione índice (-1 para pasar, -2 salir): ";
         cin >> opcion;
 
         if (opcion == -1)
@@ -245,6 +245,12 @@ void Juego::jugarPartida()
             cout << "Turno pasado." << endl;
             siguienteTurno();
             continue;
+        }
+
+        if (opcion == -2)
+        {
+            cout << "Terminó el juego." << endl;
+            return;
         }
 
         Carta* cartaJugada = jugador->jugarCarta(opcion);

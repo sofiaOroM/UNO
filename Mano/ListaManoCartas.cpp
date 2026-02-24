@@ -141,23 +141,6 @@ bool ListaManoCartas::tieneCartaJugable(Carta* cartaSuperior)
     return false;
 }
 
-int ListaManoCartas::buscarPrimeraJugable(Carta* cartaSuperior)
-{
-    NodoCartaMano* actual = cabeza;
-    int indice = 0;
-
-    while (actual != nullptr)
-    {
-        if (actual->carta->puedeJugarseSobre(cartaSuperior))
-            return indice;
-
-        actual = actual->siguiente;
-        indice++;
-    }
-
-    return -1;
-}
-
 void ListaManoCartas::mostrarCartas()
 {
     if (estaVacia())
@@ -256,36 +239,29 @@ void ListaManoCartas::ordenarMano()
 {
     if (!cabeza || !cabeza->siguiente)
         return;
-
     NodoCartaMano* ordenada = nullptr;
     NodoCartaMano* actual = cabeza;
-
     while (actual != nullptr)
     {
         NodoCartaMano* siguiente = actual->siguiente;
-
         // Desconectar completamente el nodo
         actual->siguiente = nullptr;
         actual->anterior = nullptr;
-
         if (!ordenada || debeIrAntes(actual->carta, ordenada->carta))
         {
             actual->siguiente = ordenada;
             if (ordenada)
                 ordenada->anterior = actual;
-
             ordenada = actual;
         }
         else
         {
             NodoCartaMano* temp = ordenada;
-
             while (temp->siguiente &&
                    !debeIrAntes(actual->carta, temp->siguiente->carta))
             {
                 temp = temp->siguiente;
             }
-
             actual->siguiente = temp->siguiente;
 
             if (temp->siguiente)
@@ -294,12 +270,9 @@ void ListaManoCartas::ordenarMano()
             temp->siguiente = actual;
             actual->anterior = temp;
         }
-
         actual = siguiente;
     }
-
     cabeza = ordenada;
-
     // Reconstruir cola correctamente
     NodoCartaMano* recorrer = cabeza;
     cola = nullptr;

@@ -40,7 +40,7 @@ bool preguntarActivacion(string texto)
 
     cout << endl << texto <<endl;
     cout << "-----------------------------------------"<<endl;
-    cout << "1) Sí"<<endl;
+    cout << "1) Si"<<endl;
     cout << "2) No"<<endl;
     cout << "Opción: ";
     cin >> opcion;

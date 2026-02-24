@@ -26,7 +26,6 @@ public:
     void eliminarCarta(int indice);
     Carta* obtenerCartaEn(int indice);
     bool tieneCartaJugable(Carta* cartaSuperior);
-    int buscarPrimeraJugable(Carta* cartaSuperior);
     void mostrarCartas();
     void vaciarLista();
     bool debeIrAntes(Carta* a, Carta* b);
