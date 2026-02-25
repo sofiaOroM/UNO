@@ -133,6 +133,47 @@ void PilaCartas::barajar()
 {
     if (cantidad <= 1) return;
 
+    Carta** original = new Carta*[cantidad];
+    int total = cantidad;
+
+    for (int i = 0; i < total; i++)
+    {
+        original[i] = sacarCarta();
+    }
+
+    Carta** mezclado = new Carta*[total];
+    int sizeMezcla = 0;
+
+    for (int i = 0; i < total; i++)
+    {
+        int pos = rand() % (sizeMezcla + 1);
+
+        // Desplazar elementos hacia la derecha
+        for (int j = sizeMezcla; j > pos; j--)
+        {
+            mezclado[j] = mezclado[j - 1];
+        }
+
+        mezclado[pos] = original[i];
+        sizeMezcla++;
+    }
+
+    // Volver a apilar
+    for (int i = 0; i < total; i++)
+    {
+        apilarCarta(mezclado[i]);
+    }
+
+    delete[] original;
+    delete[] mezclado;
+
+    cout << "Mazo barajado correctamente." << endl;
+}
+
+/*void PilaCartas::barajar()
+{
+    if (cantidad <= 1) return;
+
     Carta** cartas = new Carta*[cantidad];
     int total = cantidad;
 
@@ -161,7 +202,7 @@ void PilaCartas::barajar()
     delete[] cartas;
 
     cout << "Mazo barajado correctamente." << endl;
-}
+}*/
 
 void PilaCartas::recargarDesde(PilaCartas* descarte)
 {
