@@ -86,6 +86,17 @@ bool ReglasUno::puedeGanarConCartaNegra(Carta* carta)
     return true;
 }
 
+bool ReglasUno::NoPuedeGanarConCartaNegra(Carta* carta)
+{
+    if (config.permitirGanarConNegra)
+        return false;
+
+    if (carta->esComodin())
+        return true;
+
+    return false;
+}
+
 int Jugador::obtenerCantidadCartas()
 {
     return mano->obtenerCantidad();

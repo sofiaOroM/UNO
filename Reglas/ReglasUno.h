@@ -27,6 +27,7 @@ public:
 
     void verificarGritoUno(Juego* juego, Jugador* jugador);
     bool puedeGanarConCartaNegra(Carta* cartaFinal);
+    bool NoPuedeGanarConCartaNegra(Carta* carta);
 
     // Flip
     bool estaActivadoFlip();

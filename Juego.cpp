@@ -289,6 +289,15 @@ void Juego::jugarPartida()
                 cout << endl << "GANADOR: " << jugador->obtenerNombre() << endl;
                 return;
             }
+
+            if (reglas->NoPuedeGanarConCartaNegra(cartaJugada))
+            {
+                cout << endl << "No puedes ganar con carta Negra" << endl;
+                cout << endl << "Robas 2 Cartas" << endl;
+                hacerRobar(jugador,2);
+                continue;
+            }
+
         }
         siguienteTurno();
     }
